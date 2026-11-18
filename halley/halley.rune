@@ -1,24 +1,20 @@
-@author "Dustin Pilgrim"
-@description "Spatial Wayland compositor built around infinite workspace navigation"
+@author "mikuri"
 
 gather "colors.rune"
 
 env:
   QT_QPA_PLATFORM "wayland"
-  QT_QPA_PLATFORMTHEME "qt6ct"
+  QT_QPA_PLATFORMTHEME "gtk3"
   GDK_BACKEND "wayland"
   MOZ_ENABLE_WAYLAND "1"
   ELECTRON_OZONE_PLATFORM_HINT "auto"
   NIXOS_OZONE_WL "1"
   LIBVA_DRIVER_NAME "iHD"
-  MESA_LOADER_DRIVER_NAME "iris"
-  SWAYSOCK "/run/user/1000/halley/sway.sock"
-  I3SOCK "/run/user/1000/halley/sway.sock"
+  HALLEY_IPC_SOCKET "/run/user/1000/halley/halley.sock"
 end
 
 autostart:
-  once "halley-sway-bridge"
-  once "sh -c 'pkill -x wireplumber; pkill -x pipewire; sleep 1; pipewire >/dev/null 2>&1 &'"
+  once "sh ~/.config/halley/session-services.sh"
   once "noctalia"
 end
 
@@ -34,20 +30,28 @@ input:
   repeat-delay 500
   focus-mode "click"
   raise-on-click true
+
+  mouse:
+    accel-speed "-0.5"
+    accel-profile "flat"
+    natural-scroll false
+  end
+
   keyboard:
     layout "us"
     variant ""
     options ""
     model ""
   end
+
   gestures:
     enabled true
     client-passthrough true
     touch-passthrough true
     pinch-to-zoom true
-    pinch-scope "empty-field"
+    pinch-scope "global"
     compositor-scope "global"
-    modifier "$mod"
+    modifier "super"
     scroll-pan "empty-field"
     swipe-threshold-px 120
     pan-fingers 3
@@ -57,6 +61,7 @@ input:
     swipe-up-4 "apogee-open"
     apogee-swipe-down-4 "apogee-close"
   end
+
   touchpad:
     tap true
     natural-scroll true
@@ -65,14 +70,10 @@ input:
     scroll-method "two-finger"
     click-method "clickfinger"
   end
-  mouse:
-    natural-scroll false
-    accel-profile "flat"
-  end
 end
 
 font:
-  family "maple-mono-nf"
+  family "BigBlueTermPlus Nerd Font"
   size 11
 end
 
@@ -94,80 +95,44 @@ apogee:
   background-dim 0.85
 end
 
-viewport:
-  HDMI-A-1:
-    enabled true
-
-    offset-x 0
-    offset-y 0
-
+view:
+  output:
+    name "HDMI-A-1"
     width 1366
     height 768
-
-    rate 60.000
+    rate 59.790
     transform 0
     vrr "off"
     focus-ring:
-      primary-rx 820.0
-      primary-ry 420.0
-      offset-x 0
-      offset-y 0
+      radius-x 820.0
+      radius-y 420.0
+      offset-x 0.0
+      offset-y 0.0
     end
   end
 end
 
-background:
+wallpaper:
   mode "none"
-  shader "space"
-  path ""
-  fit "cover"
-  intensity 1.0
   animated false
-  colour "#181a26"
-  accent-colour "#8fa8d8"
 end
 
 field:
   gap 20.0
-  active-windows-allowed 5
+
   pins:
     corner "top-right"
-    colour "auto"
-    background-colour "auto"
     size 1.0
   end
+
   close-restore-focus true
   close-restore-pan "if-offscreen"
 
   zoom:
     enabled true
-    step 1.10
+    step 1.20
     min 0.35
-    max 1.35
-    smooth true
     smooth-rate 12.5
-  end
-
-end
-
-placement:
-  expanded:
-    strategy "center"
-    fallback "center"
-    find-empty-mode "best-effort"
-  end
-
-  landmarks:
-    strategy "nearest-free"
-    normal-blocker "relocate"
-    pinned-blocker "preserve"
-  end
-
-  reveal:
-    enabled true
-    max-pan-px 360
-    animation-ms 180
-    pan-to-new "if-needed"
   end
 end
 
@@ -175,25 +140,19 @@ node:
   show-labels "hover"
   show-app-icons "always"
 
-  node-shape "square"
-  node-label-shape "square"
+  shape "square"
+  label-shape "square"
 
   icon-size 0.72
-
   opacity 1.0
 
-  background-colour "auto"
-
-  border-colour-hover "use-window-active"
-  border-colour-inactive "use-window-inactive"
-
-  click-collapsed-outside-focus "activate"
   click-collapsed-pan "if-offscreen"
 end
 
 decay:
-  active-delay 240
-  inactive-delay 120
+  enabled true
+  outside-delay-seconds 240
+  inside-delay-seconds 120
 end
 
 trail:
@@ -214,6 +173,7 @@ clusters:
   bloom-direction "clockwise"
   show-icons true
   default-layout "stacking"
+  core-shape "square"
 end
 
 tile:
@@ -229,8 +189,12 @@ stacking:
 end
 
 physics:
-  enabled true
+  enabled false
   damping 0.45
+end
+
+fullscreen:
+  preserve-top-panels true
 end
 
 animations:
@@ -259,7 +223,7 @@ animations:
   window-close:
     enabled true
     duration-ms 270
-    style "shrink"
+    type "retract"
   end
 
   tile:
@@ -285,25 +249,13 @@ animations:
       close-duration-ms 360
     end
   end
-
-  raise:
-    enabled true
-    duration-ms 140
-    scale 1.025
-    shadow-boost 0.18
-    trigger "always"
-  end
 end
 
 effects:
   blur:
-    enabled false
-    overlays true
-    windows "auto"
-    layer-shell "off"
-    method "dual-kawase"
+    overlays false
     radius 24
-    passes 3
+    passes 0
     saturation 1.10
     noise 0.012
   end
@@ -315,25 +267,22 @@ effects:
       spread 6
       offset-x 0
       offset-y 0
-      colour "#05030530"
     end
 
     node:
       enabled true
-      blur-radius 22
+      blur-radius 12
       spread 3
       offset-x 0
       offset-y 8
-      colour "#05030524"
     end
 
     overlay:
       enabled true
-      blur-radius 30
+      blur-radius 18
       spread 4
       offset-x 0
       offset-y 10
-      colour "#05030538"
     end
   end
 end
@@ -342,49 +291,60 @@ decorations:
   border:
     size 2
     radius 0
-    colour-focused "#d65d26"
-    colour-unfocused "#333333"
   end
 
   secondary-border:
     enabled true
-    size 4
+    size 6
     gap 0
-    colour-focused "#fabd2f"
-    colour-unfocused "#1f1f1f"
+  end
+
+  titlebars:
+    enabled true
+    follow-border false
+    button-position "right"
+   title-position "center"
+    show-buttons true
+    show-icons false
+    show-title false
+    radius 0 
+     
+    height 28
+    text-size 10
+    icon-close "icons/close.svg"
+    icon-minimize "icons/minimize.svg"
+    icon-maximize "icons/maximize.svg"
+    icon-unmaximize "icons/unmaximize.svg"
   end
 
   resize-using-border true
 end
 
 overlays:
-  background-colour "auto"
-  text-colour "auto"
+  radius 0
+  borders true
   shape "square"
-  borders "true"
-  border-source "primary"
-
-  blur true
-  error-colour "#fb4934"
 end
 
 keybinds:
   mod "super"
 
-  "$var.mod+shift+r" "reload"
+  "$var.mod+ctrl+r" "reload"
   "$var.mod+n" "toggle-state"
   "$var.mod+m" "maximize-focused"
   "$var.mod+f" "toggle-fullscreen"
-  "$var.mod+p" "noctalia msg screenshot-fullscreen"
+  "$var.mod+p" "noctalia msg screenshot-fullscreen || halleyctl capture screen"
   "$var.mod+q" "cluster-layout cycle"
 
-  "$var.mod+mousewheelup" "zoom-in"
-  "$var.mod+mousewheeldown" "zoom-out"
-  "$var.mod+middlemouse" "zoom-reset"
+  "$var.mod+scroll-up" "zoom-in"
+  "$var.mod+scroll-down" "zoom-out"
+  "$var.mod+click-middle" "zoom-reset"
   "$var.mod+equal" "zoom-in"
+  "$var.mod+plus" "zoom-in"
   "$var.mod+minus" "zoom-out"
 
   "$var.mod+shift+e" "quit"
+  "$var.mod+shift+q" "toggle-widget-floating"
 
   "$var.mod+left" "node-move left"
   "$var.mod+right" "node-move right"
@@ -398,6 +358,14 @@ keybinds:
   "$var.mod+shift+right" "monitor-focus right"
   "$var.mod+shift+up" "monitor-focus up"
   "$var.mod+shift+down" "monitor-focus down"
+
+  "$var.mod+left" "tile-focus left"
+  "$var.mod+right" "tile-focus right"
+  "$var.mod+up" "tile-focus up"
+  "$var.mod+down" "tile-focus down"
+
+  "$var.mod+left" "stack-cycle forward"
+  "$var.mod+right" "stack-cycle backward"
 
   "$var.mod+shift+c" "cluster-mode"
   "$var.mod+shift+l" "cluster-layout cycle"
@@ -415,31 +383,24 @@ keybinds:
   "$var.mod+z" "bearings-show"
   "$var.mod+shift+z" "bearings-toggle"
 
-  "$var.mod+." "trail-next"
+  "$var.mod+period" "trail-next"
   "$var.mod+shift+comma" "trail-prev"
 
   "alt+tab" "cycle-focus"
   "alt+shift+tab" "cycle-focus-backward"
 
   "$var.mod+return" "foot"
+  "$var.mod+t" "foot"
   "$var.mod+d" "fuzzel"
 
-  "$var.mod+leftmouse" "move-window"
-  "$var.mod+rightmouse" "resize-window"
-  "$var.mod+shift+leftmouse" "pan-field"
-
-  "$var.mod+left" "tile-focus left"
-  "$var.mod+right" "tile-focus right"
-  "$var.mod+up" "tile-focus up"
-  "$var.mod+down" "tile-focus down"
+  "$var.mod+click-left" "pan-field"
+  "$var.mod+shift+click-left" "move-window"
+  "$var.mod+click-right" "resize-window"
 
   "$var.mod+ctrl+left" "tile-swap left"
   "$var.mod+ctrl+right" "tile-swap right"
   "$var.mod+ctrl+up" "tile-swap up"
   "$var.mod+ctrl+down" "tile-swap down"
-
-  "$var.mod+left" "stack-cycle forward"
-  "$var.mod+right" "stack-cycle backward"
 
   "$var.mod+shift+s" "halleyctl capture menu"
 
@@ -455,33 +416,9 @@ keybinds:
   "$var.mod+j" "noctalia msg bar-toggle"
   "$var.mod+ctrl+t" "noctalia msg panel-toggle wallpaper"
 
-  "$var.mod+shift+p" "noctalia msg screenshot-region"
+  "$var.mod+shift+p" "noctalia msg screenshot-region || halleyctl capture region"
 
   "XF86AudioRaiseVolume" "wpctl set-volume -l 1 @default_audio_sink@ 5%+"
   "XF86AudioLowerVolume" "wpctl set-volume @default_audio_sink@ 5%-"
   "XF86AudioMute" "wpctl set-mute @default_audio_sink@ toggle"
-end
-
-rules:
-  rule:
-    app-id "firefox"
-    title [r"File Upload.*", r"Open File.*", r"Save File.*", r"Choose.*"]
-    spawn-placement "center"
-    cluster-participation "float"
-  end
-end
-
-gamescope:
-  enabled true
-  monitor "focused"
-  output-width "auto"
-  output-height "auto"
-  game-width "auto"
-  game-height "auto"
-  refresh "auto"
-  fullscreen true
-  borderless false
-  suppress-overlays true
-  passthrough-pointer-lock true
-  bypass-spatial-camera true
 end

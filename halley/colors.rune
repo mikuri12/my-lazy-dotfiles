@@ -1,46 +1,89 @@
+
 decorations:
   border:
-    colour-focused "#d5aca9"
-    colour-unfocused "#d5aca9"
+    colour-focused "#bf925a"
+    colour-unfocused "#bf925a"
   end
   secondary-border:
-    colour-focused "#1a1d20"
-    colour-unfocused "#1a1d20"
+    colour-focused "#ffe7c4"
+    colour-unfocused "#ffe7c4"
+  end
+  titlebars:
+    colour-focused "#ffe7c4"
+    colour-unfocused "#ffe7c4"
+    foreground-colour-focused "#614833"
+    foreground-colour-unfocused "#614833"
+    icon-minimize-colour "#bf925a"
+    icon-maximize-colour "#b38855"
+    icon-unmaximize-colour "#b38855"
+    icon-close-colour "#91765e"
+    button-hover-colour "#91765e"
+    button-pressed-colour "#bf925a"
   end
 end
 
 node:
-  background-colour "#2d3339"
+  background-colour "#fde5c2"
+  border-colour "#b6a999"
+  border-colour-highlighted "#bf925a"
 end
 
 overlays:
-  background-colour "#1a1d20"
-  text-colour "#ebcfb2"
-  error-colour "#b38d97"
+  background-colour "#ffe7c4"
+  text-colour "#614833"
+  error-colour "#91765e"
+  border-colour "#bf925a"
+
+  zoom-indicator:
+    background-colour "#fde5c2"
+    text-colour "#614833"
+    border-colour "#bf925a"
+  end
 end
 
 field:
   pins:
-    colour "#1a1d20"
-    background-colour "#d5aca9"
+    colour "#ffe7c4"
+    background-colour "#bf925a"
   end
 end
 
-background:
-  colour "#1a1d20"
-  accent-colour "#c5baaf"
+wallpaper:
+  colour "#ffe7c4"
+  accent-colour "#bf925a"
 end
 
 effects:
   shadows:
     window:
-      colour "#1a1d20"
+      colour "#84776540"
     end
     node:
-      colour "#1a1d20"
+      colour "#84776524"
     end
     overlay:
-      colour "#1a1d20"
+      colour "#84776538"
     end
+  end
+end
+
+lift:
+  colors:
+    panel "#ffe7c4ee"
+    panel-border "#b6a999cc"
+    dropdown "#fde5c2ee"
+    dropdown-border "#bf925acc"
+    search "#fee6c3d8"
+    row-selected "#e4dacdea"
+    divider "#b6a99999"
+    text "#614833"
+    subtext "#614833"
+    hint "#614833cc"
+    accent "#bf925a"
+    badge "#e4dacdf2"
+    danger "#91765e"
+    search-icon "#614833"
+    icon "#bf925a"
+    alt-hint "#b38c58"
   end
 end

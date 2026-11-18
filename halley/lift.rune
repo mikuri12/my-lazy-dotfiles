@@ -1,5 +1,7 @@
 @description "Halley Lift configuration"
 
+gather "colors.rune"
+
 lift:
   placeholder "Search apps, nodes, clusters, actions..."
 
@@ -37,25 +39,6 @@ lift:
     draft 10
   end
 
-  colors:
-    panel "#151720ee"
-    panel-border "#2b3248cc"
-    dropdown "#151720ee"
-    dropdown-border "#2b3248cc"
-    search "#090b12d8"
-    row-selected "#2e4575ea"
-    divider "#2b324899"
-    text "#f2f5ff"
-    subtext "#9ea7bf"
-    hint "#858fa8"
-    accent "#8fb5ff"
-    badge "#334875f2"
-    danger "#eb9a8f"
-    search-icon ""
-    icon ""
-    alt-hint ""
-  end
-
   border:
     enabled true
     width 1
@@ -86,7 +69,7 @@ lift:
     row-gap 6
     section-height 22
     footer-height 0
-    font "sans-serif"
+    font "BigBlueTermPlus Nerd Font"
     search-font-size 22
     badge-font-size 15
     title-font-size 17
