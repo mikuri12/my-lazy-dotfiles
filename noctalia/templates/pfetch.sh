@@ -1,13 +1,58 @@
 #!/usr/bin/env bash
 
-DARK='{{colors.primary.default.hex | darken 15}}'
-MID='{{colors.primary.default.hex}}'
-LIGHT='{{colors.primary.default.hex | lighten 20}}'
-COL_LABEL='{{colors.primary.default.hex}}'
-COL_TITLE='{{colors.secondary.default.hex}}'
-COL_DATA='{{colors.on_surface.default.hex}}'
 
-hex_to_rgb() { local h=${1
+hex_to_rgb() { local h=${1#"#"}; printf '%d %d %d' "0x${h:0:2}" "0x${h:2:2}" "0x${h:4:2}"; }
+
+# ── Colores dark ──────────────────────────────────────────────────────────
+_D_DARK='{{colors.primary.dark.hex | darken 15}}'
+_D_MID='{{colors.primary.dark.hex}}'
+_D_LIGHT='{{colors.primary.dark.hex | lighten 20}}'
+_D_LABEL='{{colors.primary.dark.hex}}'
+_D_TITLE='{{colors.secondary.dark.hex}}'
+_D_DATA='{{colors.on_surface.dark.hex}}'
+_D_PAL2='{{colors.secondary.dark.hex}}'
+_D_PAL3='{{colors.tertiary.dark.hex}}'
+_D_PAL4='{{colors.error.dark.hex}}'
+_D_PAL6='{{colors.surface_variant.dark.hex}}'
+
+# ── Colores light ─────────────────────────────────────────────────────────
+_L_DARK='{{colors.primary.light.hex | darken 15}}'
+_L_MID='{{colors.primary.light.hex}}'
+_L_LIGHT='{{colors.primary.light.hex | lighten 20}}'
+_L_LABEL='{{colors.primary.light.hex}}'
+_L_TITLE='{{colors.secondary.light.hex}}'
+_L_DATA='{{colors.on_surface.light.hex}}'        
+_L_PAL2='{{colors.secondary.light.hex}}'
+_L_PAL3='{{colors.tertiary.light.hex}}'
+_L_PAL4='{{colors.error.light.hex}}'
+_L_PAL6='{{colors.surface_variant.light.hex}}'
+
+
+_CURRENT_MODE=$(noctalia msg theme-mode-get 2>/dev/null | tr -d '[:space:]')
+
+if [[ "$_CURRENT_MODE" == "light" ]]; then
+    DARK="$_L_DARK"
+    MID="$_L_MID"
+    LIGHT="$_L_LIGHT"
+    COL_LABEL="$_L_LABEL"
+    COL_TITLE="$_L_TITLE"
+    COL_DATA="$_L_DATA"
+    PAL2="$_L_PAL2"
+    PAL3="$_L_PAL3"
+    PAL4="$_L_PAL4"
+    PAL6="$_L_PAL6"
+else
+    DARK="$_D_DARK"
+    MID="$_D_MID"
+    LIGHT="$_D_LIGHT"
+    COL_LABEL="$_D_LABEL"
+    COL_TITLE="$_D_TITLE"
+    COL_DATA="$_D_DATA"
+    PAL2="$_D_PAL2"
+    PAL3="$_D_PAL3"
+    PAL4="$_D_PAL4"
+    PAL6="$_D_PAL6"
+fi
 
 read -r DR DG DB <<< "$(hex_to_rgb "$DARK")"
 read -r MR MG MB <<< "$(hex_to_rgb "$MID")"
@@ -15,12 +60,6 @@ read -r LR LG LB <<< "$(hex_to_rgb "$LIGHT")"
 read -r LAR LAG LAB <<< "$(hex_to_rgb "$COL_LABEL")"
 read -r TIR TIG TIB <<< "$(hex_to_rgb "$COL_TITLE")"
 read -r DAR DAG DAB <<< "$(hex_to_rgb "$COL_DATA")"
-
-PAL2='{{colors.secondary.default.hex}}'
-PAL3='{{colors.tertiary.default.hex}}'
-PAL4='{{colors.error.default.hex}}'
-PAL6='{{colors.surface_variant.default.hex}}'
-
 read -r P2R P2G P2B <<< "$(hex_to_rgb "$PAL2")"
 read -r P3R P3G P3B <<< "$(hex_to_rgb "$PAL3")"
 read -r P4R P4G P4B <<< "$(hex_to_rgb "$PAL4")"
@@ -29,6 +68,19 @@ read -r P6R P6G P6B <<< "$(hex_to_rgb "$PAL6")"
 IFS= read -r -d '' ART << 'GRID'
             
     +.  ++  
+   #+.+##.  
+   #++###+  
+   ####++++ 
+  #####.#+# 
+  ###++.+.++
+  ##++++...+
+ ###+++++..+
+ ####++.... 
+ ####+...   
+####++...   
+####++...   
+####++....  
+  #+++....  
    ++++..   
 GRID
 
@@ -51,13 +103,13 @@ color_of() {
 }
 
 mapfile -t ROWS <<< "$ART"
-NROWS=${
+NROWS=${#ROWS[@]}
 (( NROWS % 2 != 0 )) && { ROWS+=(""); NROWS=$((NROWS + 1)); }
 
 MAXW=0
-for row in "${ROWS[@]}"; do (( ${
+for row in "${ROWS[@]}"; do (( ${#row} > MAXW )) && MAXW=${#row}; done
 for i in "${!ROWS[@]}"; do
-    while (( ${
+    while (( ${#ROWS[$i]} < MAXW )); do ROWS[$i]+=" "; done
 done
 
 {
@@ -95,7 +147,7 @@ get_os() {
     while IFS='=' read -r key val; do
         case $key in PRETTY_NAME) distro=$val ;; esac
     done < /etc/os-release
-    distro=${distro
+    distro=${distro#[\"\']}
     distro=${distro%%[\"\']}
 }
 
@@ -185,4 +237,4 @@ sed -i \
     -e "s/__P6R__/${P6R}/g" -e "s/__P6G__/${P6G}/g" -e "s/__P6B__/${P6B}/g" \
     "$SOURCE"
 
-echo "pfetch: logo.txt + source.sh regenerados con colores del tema"
+echo "pfetch: logo.txt + source.sh regenerados con colores del tema (modo: ${_CURRENT_MODE:-dark})"

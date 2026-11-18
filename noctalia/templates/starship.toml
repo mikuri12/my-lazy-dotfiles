@@ -38,10 +38,10 @@ style = "bg:primary fg:on_primary bold"
 read_only = ' 󰌾'
 read_only_style = "bg:primary fg:error"
 format = '[ $path$read_only ]($style)  ' 
-home_symbol = " "
+home_symbol = "home"
 
 [os]
-disable = false
+disabled = true
 style = "bg:primary fg:on_primary bold"
 format = '[ ]($style) '
 
@@ -57,7 +57,9 @@ error_symbol   = "[❯](bold fg:error)"
 
 [git_branch]
 style = "bg:tertiary fg:on_tertiary"
-format = '[ $symbol$branch ]($style) '
+symbol = ""
+ignore_branches = ["master"]
+format = '[ $branch ]($style) '
 
 [git_status]
 style = "bg:tertiary fg:on_tertiary"
@@ -65,31 +67,38 @@ format = '([$all_status$ahead_behind]($style) )'
 
 [nodejs]
 style = "bg:primary fg:on_primary"
-format = '[ $symbol$version ]($style) '
+detect_folders = ["!.config"]
+format = '([ $version ]($style) )'
 
 [python]
 style = "bg:primary fg:on_primary"
-format = '[ ${symbol}${pyenv_prefix}(${version} )]($style) '
+detect_folders = ["!.config"]
+format = '([ ${pyenv_prefix}$version ]($style) )'
 
 [java]
 style = "bg:primary fg:on_primary"
-format = '[ $symbol$version ]($style) '
+detect_folders = ["!.config"]
+format = '([ $version ]($style) )'
 
 [c]
 style = "bg:primary fg:on_primary"
-format = '[ $symbol$version ]($style) '
+detect_folders = ["!.config"]
+format = '([ $version ]($style) )'
 
 [cpp]
 style = "bg:primary fg:on_primary"
-format = '[ $symbol$version ]($style) '
+detect_folders = ["!.config"]
+format = '([ $version ]($style) )'
 
 [rust]
 style = "bg:primary fg:on_primary"
-format = '[ $symbol$version ]($style) '
+detect_folders = ["!.config"]
+format = '([ $version ]($style) )'
 
 [golang]
 style = "bg:primary fg:on_primary"
-format = '[ $symbol$version ]($style) '
+detect_folders = ["!.config"]
+format = '([ $version ]($style) )'
 
 [aws]
 symbol = " "
@@ -148,7 +157,7 @@ symbol = "󰔷 "
 [nim]
 symbol = "󰆥 "
 [nix_shell]
-symbol = " "
+symbol = ""
 [ocaml]
 symbol = " "
 [os.symbols]
@@ -181,7 +190,7 @@ Mariner = " "
 MidnightBSD = " "
 Mint = " "
 NetBSD = " "
-NixOS = " "
+NixOS = ""
 Nobara = " "
 OpenBSD = "󰈺 "
 openSUSE = " "
@@ -203,7 +212,9 @@ symbol = "󰏗 "
 [perl]
 symbol = " "
 [php]
-symbol = " "
+style = "bg:primary fg:on_primary"
+detect_folders = ["!.config"]
+format = '([ $version ]($style) )'
 [pijul_channel]
 symbol = " "
 [pixi]
@@ -211,7 +222,9 @@ symbol = "󰏗 "
 [rlang]
 symbol = "󰟔 "
 [ruby]
-symbol = " "
+style = "bg:primary fg:on_primary"
+detect_folders = ["!.config"]
+format = '([ $version ]($style) )'
 [scala]
 symbol = " "
 [status]

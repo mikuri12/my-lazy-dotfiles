@@ -1,0 +1,89 @@
+
+decorations:
+  border:
+    colour-focused "{{colors.primary.default.hex}}"
+    colour-unfocused "{{colors.primary.default.hex}}"
+  end
+  secondary-border:
+    colour-focused "{{colors.surface.default.hex}}"
+    colour-unfocused "{{colors.surface.default.hex}}"
+  end
+  titlebars:
+    colour-focused "{{colors.surface.default.hex}}"
+    colour-unfocused "{{colors.surface.default.hex}}"
+    foreground-colour-focused "{{colors.on_surface.default.hex}}"
+    foreground-colour-unfocused "{{colors.on_surface_variant.default.hex}}"
+    icon-minimize-colour "{{colors.primary.default.hex}}"
+    icon-maximize-colour "{{colors.secondary.default.hex}}"
+    icon-unmaximize-colour "{{colors.secondary.default.hex}}"
+    icon-close-colour "{{colors.error.default.hex}}"
+    button-hover-colour "{{colors.error.default.hex}}"
+    button-pressed-colour "{{colors.primary.default.hex}}"
+  end
+end
+
+node:
+  background-colour "{{colors.surface_container.default.hex}}"
+  border-colour "{{colors.outline_variant.default.hex}}"
+  border-colour-highlighted "{{colors.primary.default.hex}}"
+end
+
+overlays:
+  background-colour "{{colors.surface.default.hex}}"
+  text-colour "{{colors.on_surface.default.hex}}"
+  error-colour "{{colors.error.default.hex}}"
+  border-colour "{{colors.primary.default.hex}}"
+
+  zoom-indicator:
+    background-colour "{{colors.surface_container.default.hex}}"
+    text-colour "{{colors.on_surface.default.hex}}"
+    border-colour "{{colors.primary.default.hex}}"
+  end
+end
+
+field:
+  pins:
+    colour "{{colors.on_primary.default.hex}}"
+    background-colour "{{colors.primary.default.hex}}"
+  end
+end
+
+wallpaper:
+  colour "{{colors.surface.default.hex}}"
+  accent-colour "{{colors.primary.default.hex}}"
+end
+
+effects:
+  shadows:
+    window:
+      colour "{{colors.shadow.default.hex}}40"
+    end
+    node:
+      colour "{{colors.shadow.default.hex}}24"
+    end
+    overlay:
+      colour "{{colors.shadow.default.hex}}38"
+    end
+  end
+end
+
+lift:
+  colors:
+    panel "{{colors.surface.default.hex}}ee"
+    panel-border "{{colors.outline_variant.default.hex}}cc"
+    dropdown "{{colors.surface_container.default.hex}}ee"
+    dropdown-border "{{colors.primary.default.hex}}cc"
+    search "{{colors.surface_container_lowest.default.hex}}d8"
+    row-selected "{{colors.primary_container.default.hex}}ea"
+    divider "{{colors.outline_variant.default.hex}}99"
+    text "{{colors.on_surface.default.hex}}"
+    subtext "{{colors.on_surface_variant.default.hex}}"
+    hint "{{colors.on_surface_variant.default.hex}}cc"
+    accent "{{colors.primary.default.hex}}"
+    badge "{{colors.secondary_container.default.hex}}f2"
+    danger "{{colors.error.default.hex}}"
+    search-icon "{{colors.on_surface_variant.default.hex}}"
+    icon "{{colors.primary.default.hex}}"
+    alt-hint "{{colors.tertiary.default.hex}}"
+  end
+end
