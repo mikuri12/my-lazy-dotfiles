@@ -14,3 +14,5 @@ sudo chmod u+rw ~/.config -R
 ![preview 2](preview/preview.png)
 ![preview 3](preview/preview1.png)
 ![preview 4](preview/preview2.png)
+![preview 4](preview/preview3.webp) 
+![preview 4](preview/preview4.webp)
